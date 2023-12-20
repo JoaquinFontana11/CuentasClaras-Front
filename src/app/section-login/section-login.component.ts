@@ -1,33 +1,33 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../service/api.service';
-import { OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { NgIf } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-section-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf],
   template: `
-    <section class="bg-gray-50 dark:bg-gray-900">
+    <section class="bg-gray-50">
       <div
         class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
       >
         <div
-          class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700"
+          class="w-fullrounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 "
         >
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
             <h1
-              class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white"
+              class="text-xl font-bold leading-tight tracking-tight"
             >
               Ingresar a Cuentas Claras
             </h1>
-            <form class="space-y-4 md:space-y-6" action="">
+            <form class="space-y-4 md:space-y-6" (submit)="onLogin()">
               <div>
                 <label
                   for="username"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium"
                   >Username</label
                 >
                 <input
@@ -39,14 +39,14 @@ import { CookieService } from 'ngx-cookie-service';
                   placeholder="usuario123"
                   required=""
                 />
-                <div *ngIf="username.errors?.['required']" class="alert">
+                <div *ngIf="!username" class="alert font-medium text-red-600">
                   username requerido
                 </div>
               </div>
               <div>
                 <label
                   for="password"
-                  class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  class="block mb-2 text-sm font-medium"
                   >Password</label
                 >
                 <input
@@ -59,7 +59,14 @@ import { CookieService } from 'ngx-cookie-service';
                   required=""
                 />
               </div>
-              <button (click)="onLogin()">Sign in</button>
+              <div *ngIf="!password" class="alert font-medium text-red-600">
+                  password requerido
+              </div>
+              <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Sign in</button>
+              <a href="/register" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Log in</a>
+              <div *ngIf="errors" class="alert font-medium text-red-600">
+                {{errors}}
+              </div>
             </form>
           </div>
         </div>
@@ -71,21 +78,24 @@ import { CookieService } from 'ngx-cookie-service';
 export class SectionLoginComponent {
   username: string = '';
   password: string = '';
+  errors: String = '';
 
-  result: any;
 
   ngOnInit(): void {}
-  constructor(private api: ApiService, private cookieService: CookieService) {}
+  constructor(private api: ApiService, private cookieService: CookieService, private router: Router) {}
 
   onLogin() {
-    this.api
+     this.api
       .login(this.username, this.password)
-      .subscribe((res: Observable<any>) => {
-        this.result = res;
-        if (res) {
-          this.cookieService.set('userId', this.result);
-        } else {
+      .subscribe({
+        next:(res: any) =>{
+          this.cookieService.set("userId",res);
+          this.router.navigate(['/'])
+        }, error:(err) =>{
+          this.errors = err.error.message;
+          console.log(err);
         }
-      });
+      });  
   }
+
 }

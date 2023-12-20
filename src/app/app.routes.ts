@@ -6,6 +6,7 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { GroupNewComponent } from './group-new/group-new.component';
 import { GroupInvitationsComponent } from './group-invitations/group-invitations.component';
+import { SectionRegisterComponent } from './section-register/section-register.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,4 +16,5 @@ export const routes: Routes = [
   { path: 'pagos', component: PaymentsComponent },
   { path: 'grupos/nuevo', component: GroupNewComponent },
   { path: 'grupos/invitaciones', component: GroupInvitationsComponent },
+  { path:  'register', component:SectionRegisterComponent}
 ];
