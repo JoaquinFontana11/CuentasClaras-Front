@@ -5,18 +5,18 @@ import { Component } from '@angular/core';
   standalone: true,
   imports: [],
   template: `
-    <section class="flex flex-col items-center w-full">
-      <h3 class="text-xl font-bold mb-3">Saldo Total</h3>
+    <section class="flex flex-col items-center w-full gap-5">
+      <h1 class="text-4xl font-bold mb-3">Saldo Total</h1>
       <div
         class="flex flex-row gap-3 items-center bg-slate-200 pr-4 rounded-md"
       >
         <div
-          class=" flex justify-center px-20 py-5 w-32 m-auto border-r-2 border-slate-400"
+          class=" flex justify-center px-32 py-10 w-32 m-auto border-r-2 border-slate-400"
         >
           @if (hidden) {
-          <span>????</span>
+          <span class="text-2xl">????</span>
           } @else {
-          <span>Dinero</span>
+          <span class="text-2xl">Dinero</span>
           }
         </div>
         <div class="mt-2">

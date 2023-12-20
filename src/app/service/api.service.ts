@@ -13,4 +13,11 @@ export class ApiService {
   public getUsuarios(): Observable<any> {
     return this.http.get<any>(this.urlApi + '/users/findAll');
   }
+
+  public login(username: string, password: string): Observable<any> {
+    return this.http.post<any>('http://localhost:8080/auth/login', {
+      userName: username,
+      password: password,
+    });
+  }
 }
