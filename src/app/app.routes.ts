@@ -7,14 +7,15 @@ import { PaymentsComponent } from './payments/payments.component';
 import { GroupNewComponent } from './group-new/group-new.component';
 import { GroupInvitationsComponent } from './group-invitations/group-invitations.component';
 import { SectionRegisterComponent } from './section-register/section-register.component';
+import { logged } from './guards/logged';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', component: HomeComponent},
   { path: 'login', component: SectionLoginComponent },
-  { path: 'grupos', component: GroupsComponent },
-  { path: 'grupos/detalle/:id', component: GroupDetailComponent },
-  { path: 'pagos', component: PaymentsComponent },
-  { path: 'grupos/nuevo', component: GroupNewComponent },
-  { path: 'grupos/invitaciones', component: GroupInvitationsComponent },
+  { path: 'grupos', component: GroupsComponent ,canActivate:[logged]},
+  { path: 'grupos/detalle/:id', component: GroupDetailComponent,canActivate:[logged] },
+  { path: 'pagos', component: PaymentsComponent,canActivate:[logged] },
+  { path: 'grupos/nuevo', component: GroupNewComponent ,canActivate:[logged]},
+  { path: 'grupos/invitaciones', component: GroupInvitationsComponent,canActivate:[logged] },
   { path:  'register', component:SectionRegisterComponent}
 ];

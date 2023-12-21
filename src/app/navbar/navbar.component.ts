@@ -1,18 +1,22 @@
-import { Component } from '@angular/core';
+import { NgIf } from '@angular/common';
+import { Component, OnInit, afterNextRender } from '@angular/core';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [],
+  imports: [NgIf],
   template: `
     <nav
-      class="bg-white sticky z-20 w-full top-0 start-0 border-b border-gray-200 mb-10"
+      class="bg-white sticky z-20 w-full top-0 start-0 border-b border-gray-200 "
     >
       <div class="w-full flex flex-row items-center justify-between p-4">
         <a class="flex items-center " href="/">
           <img src="assets/img/billetera.png" class="h-8" alt="Logo" />
         </a>
         <div class="items-center gap-3 flex w-auto">
+          <div *ngIf="this.cookieService.get('userId')">
           <ul
             class="flex p-0 font-medium border-gray-100 rounded-lg flex-row mt-0 border-0 bg-white"
           >
@@ -85,27 +89,40 @@ import { Component } from '@angular/core';
             </li>
             } }
           </ul>
+          </div>
         </div>
         <div class="flex gap-3">
-          <button
+        <div *ngIf="this.cookieService.get('userId')">
+          <button (click)="onCerrarSesion()"
             type="button"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
           >
             Cerrar Sesion
           </button>
+          </div>
+          <div *ngIf="!this.cookieService.get('userId')">
           <a
             href="/login"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 text-center"
           >
             Iniciar Sesion
           </a>
+          </div>
         </div>
       </div>
     </nav>
   `,
   styles: ``,
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit{
+
+  existeCookie: boolean = false;
+  constructor(public cookieService:CookieService, private router: Router){}
+
+  ngOnInit(): void {}
+
+  
+
   menus = [
     {
       name: 'Pagos',
@@ -133,4 +150,9 @@ export class NavbarComponent {
       href: '',
     },
   ];
+
+  onCerrarSesion(){
+    this.cookieService.delete("userId");
+    this.router.navigate(["/login"])
+  }
 }

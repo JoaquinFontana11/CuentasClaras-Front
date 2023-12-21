@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import { Route, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,5 +13,15 @@ import { NavbarComponent } from './navbar/navbar.component';
   styles: ``,
 })
 export class AppComponent {
+
+  constructor(private cookieService: CookieService, private router:Router){}
+  /*
+  ngOnInit(): void{
+    if (this.cookieService.get("userId")){
+      this.router.navigate(["/"])
+    }else{
+      this.router.navigate(["/login"])
+    }
+  }*/
   title = 'CuentasClaras';
 }

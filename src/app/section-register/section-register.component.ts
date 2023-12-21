@@ -4,14 +4,13 @@ import { ApiService } from '../service/api.service';
 import { CookieService } from 'ngx-cookie-service';
 import { NgIf } from '@angular/common';
 import { Router } from '@angular/router';
-import { Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-section-register',
   standalone: true,
   imports: [FormsModule,NgIf],
   template: `
-  <section class="bg-gray-50">
+  <section >
       <div
         class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
       >
@@ -126,23 +125,60 @@ export class SectionRegisterComponent {
   lastName: string ='';
   email: string ='';
   errors: string ='';
+  
 
   ngOnInit(): void {}
-  constructor(private api: ApiService, private cookieService: CookieService, private router: Router, private validators: Validators) {}
+  constructor(private api: ApiService, private cookieService: CookieService, private router: Router) {}
 
   onRegister(){
     
-
-    this.api.register(this.username,this.name,this.lastName,this.email,this.password).subscribe({
-      next:(res) =>{
-        console.log("registro exitoso");
-        this.router.navigate(["/login"])
-      }, error: (err) =>{
-        this.errors = err.error.message;
-      }
-    })
+    this.validateForm()
+    console.log(this.username + " "+ this.password + " "+ this.name + " " + this.lastName + " "+ this.email)
+    if (this.errors == ''){
+      this.api.register(this.username,this.name,this.lastName,this.email,this.password).subscribe({
+        next:(res) =>{
+          console.log("registro exitoso");
+          this.router.navigate(["/login"])
+        }, error: (err) =>{
+          this.errors = err.error.message;
+        } 
+      })
+    }
   }
 
+  validateForm(){
+    if (this.username == null || this.username == ''){
+      this.errors = "La contraseña del usuario no puede estar vacio"
+      return 
+    }
+
+    if (this.password == null || this.password == ''){
+      this.errors = "La contraseña del usuario no puede estar vacio"
+      return
+    }
+
+    if (this.name == null || this.name == ''){
+      this.errors = "El nombre del usuario no puede estar vacio"
+      return
+    }
+    if (this.lastName == null || this.lastName == ''){
+      this.errors = "El apellido del usuario no puede estar vacio"
+      return
+    }
+    if ( (this.email.search("@"))==-1 ){
+      this.errors = "El mail ingresado no es valido"
+      return
+    }
+      if (this.email == "@"){
+        this.errors = "El mail ingresado no es valido"
+        return
+      }
+    if (this.email == null || this.email == ''){
+      this.errors = "El Email del usuario no puede estar vacio"
+      return
+    }
+    
+  }
   
 
 }

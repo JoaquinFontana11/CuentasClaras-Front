@@ -3,6 +3,8 @@ import { SectionMoneyComponent } from '../section-money/section-money.component'
 import { SectionGroupsComponent } from '../section-groups/section-groups.component';
 import { ApiService } from '../service/api.service';
 import { SectionPaymentsComponent } from '../section-payments/section-payments.component';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -33,10 +35,13 @@ import { SectionPaymentsComponent } from '../section-payments/section-payments.c
 export class HomeComponent implements OnInit {
   usuarios: any[] = [];
 
-  constructor(private apiService: ApiService) {}
+  constructor(private apiService: ApiService, private cookieService:CookieService, private router:Router) {}
 
   ngOnInit(): void {
     this.obtenerUsuarios();
+    if (!this.cookieService.get("userId")){
+      this.router.navigate(["/login"]);
+    }
   }
 
   obtenerUsuarios() {
