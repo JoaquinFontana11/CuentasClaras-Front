@@ -19,63 +19,65 @@ import { Component } from '@angular/core';
             @for (menu of menus; track menu.name) { @if (menu.submenus.length
             !== 0) {
             <li>
-              <button
-                (click)="menu.dropdown = !menu.dropdown"
-                class="flex flex-row items-center gap-1 py-2 px-3 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0"
-              >
-                <span>{{ menu.name }}</span>
-                @if(menu.dropdown) {
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  data-slot="icon"
-                  class="w-6 h-6"
+              <div>
+                <button
+                  (click)="menu.dropdown = !menu.dropdown"
+                  class="flex flex-row items-center gap-1 py-2 px-3 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m8.25 4.5 7.5 7.5-7.5 7.5"
-                  />
-                </svg>
+                  <span>{{ menu.name }}</span>
+                  @if(menu.dropdown) {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    data-slot="icon"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m8.25 4.5 7.5 7.5-7.5 7.5"
+                    />
+                  </svg>
 
-                } @else {
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  data-slot="icon"
-                  class="w-6 h-6"
+                  } @else {
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    data-slot="icon"
+                    class="w-6 h-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                    />
+                  </svg>
+                  }
+                </button>
+                @if (menu.dropdown) {
+                <div
+                  class="bg-slate-100 shadow-lg flex flex-col gap-2 absolute m-10 top-3 w-32"
                 >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
-                  />
-                </svg>
+                  @for (submenu of menu.submenus; track submenu.name) {
+                  <li>
+                    <a
+                      href="{{ submenu.href }}"
+                      class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0"
+                      >{{ submenu.name }}</a
+                    >
+                  </li>
+                  }
+                </div>
                 }
-              </button>
+              </div>
             </li>
-
-            @if (menu.dropdown) {
-            <div
-              class="bg-slate-100 shadow-lg flex flex-col gap-2 absolute m-10"
-            >
-              @for (submenu of menu.submenus; track submenu.name) {
-              <li>
-                <a
-                  href="{{ submenu.href }}"
-                  class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 hover:bg-transparent hover:text-blue-700 p-0"
-                  >{{ submenu.name }}</a
-                >
-              </li>
-              }
-            </div>
-            } } @else {
+            } @else {
             <li>
               <a
                 href="{{ menu.href }}"
@@ -130,7 +132,20 @@ export class NavbarComponent {
           href: '/grupos/invitaciones',
         },
       ],
-      href: '',
+    },
+    {
+      name: 'Gastos',
+      dropdown: false,
+      submenus: [
+        {
+          name: 'Nuevo Gasto',
+          href: '/gastos/nuevo',
+        },
+        {
+          name: 'Mis Gastos',
+          href: '/gastos',
+        },
+      ],
     },
   ];
 }

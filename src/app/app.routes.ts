@@ -6,6 +6,9 @@ import { GroupDetailComponent } from './group-detail/group-detail.component';
 import { PaymentsComponent } from './payments/payments.component';
 import { GroupNewComponent } from './group-new/group-new.component';
 import { GroupInvitationsComponent } from './group-invitations/group-invitations.component';
+import { ExpensesComponent } from './expenses/expenses.component';
+import { ExpensesNewComponent } from './expenses-new/expenses-new.component';
+import { ExpensesEditComponent } from './expenses-edit/expenses-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent },
@@ -15,4 +18,7 @@ export const routes: Routes = [
   { path: 'pagos', component: PaymentsComponent },
   { path: 'grupos/nuevo', component: GroupNewComponent },
   { path: 'grupos/invitaciones', component: GroupInvitationsComponent },
+  { path: 'gastos', component: ExpensesComponent },
+  { path: 'gastos/nuevo', component: ExpensesNewComponent },
+  { path: 'gastos/editar/:id', component: ExpensesEditComponent },
 ];

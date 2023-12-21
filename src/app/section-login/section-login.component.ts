@@ -4,11 +4,12 @@ import { ApiService } from '../service/api.service';
 import { OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-section-login',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, NgIf],
   template: `
     <section class="bg-gray-50 dark:bg-gray-900">
       <div
@@ -39,9 +40,7 @@ import { CookieService } from 'ngx-cookie-service';
                   placeholder="usuario123"
                   required=""
                 />
-                <div *ngIf="username.errors?.['required']" class="alert">
-                  username requerido
-                </div>
+                <div *ngIf="!username" class="alert">username requerido</div>
               </div>
               <div>
                 <label
@@ -59,6 +58,7 @@ import { CookieService } from 'ngx-cookie-service';
                   required=""
                 />
               </div>
+              <div *ngIf="!password" class="alert">password requerido</div>
               <button (click)="onLogin()">Sign in</button>
             </form>
           </div>
