@@ -26,13 +26,14 @@ export class ApiService {
   }
 
   public saveGroup(nombre:string,cat:string):Observable<any>{
-   let group= {
-    nombre:nombre,
-    category :{
-      name:cat
+   console.log(nombre);
+   console.log(cat);
+   return this.http.post<any>('http://localhost:8080/group/save',{
+    name: nombre,
+    category:{
+      name: cat
     }
-   }
-   return this.http.post<any>('http://localhost:8080/group/save',group)
+  })
   }
 
 }
