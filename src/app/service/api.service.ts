@@ -37,7 +37,15 @@ export class ApiService {
   }
 
   public groupDetail(id:number):Observable<any>{
+    let grupo=this.http.get<any>('http://localhost:8080/group/findById/'+id);
+    console.log("IMPRIMO EN LA APIIIIIIIII")
+    console.log(JSON.stringify(grupo,null,3))
+
     return this.http.get<any>('http://localhost:8080/group/findById/'+id);
+  }
+
+  public groupExpenses(id:number):Observable<any>{
+    return this.http.get<any>('http://localhost:8080/expenses/findByGroup/'+id);
   }
 
 }
