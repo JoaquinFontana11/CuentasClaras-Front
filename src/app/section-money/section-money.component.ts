@@ -7,8 +7,10 @@ import { ApiService } from '../service/api.service';
   standalone: true,
   imports: [],
   template: `
-    <section class="flex flex-col items-center w-full gap-5">
-      <h1 class="text-4xl font-bold mb-3">Saldo Total</h1>
+    <section class="flex flex-col items-center w-full gap-5 mt-5">
+      <h1 class="text-4xl font-bold mb-3">
+        Saldo Total de {{ this.user.name }} {{ this.user.lastName }}
+      </h1>
       <div
         class="flex flex-row gap-3 items-center bg-slate-200 pr-4 rounded-md"
       >
@@ -18,7 +20,7 @@ import { ApiService } from '../service/api.service';
           @if (hidden) {
           <span class="text-2xl">????</span>
           } @else {
-          <span class="text-2xl">{{totalAPagar}}</span>
+          <span class="text-2xl">{{ user.money }}</span>
           }
         </div>
         <div class="mt-2">
@@ -70,20 +72,21 @@ import { ApiService } from '../service/api.service';
 })
 export class SectionMoneyComponent implements OnInit {
   hidden = false;
-  totalAPagar: number = 0;
+  user: any = {};
   payments: any[] = [];
 
-  constructor(private cookieService: CookieService, private apiService: ApiService) { }
+  constructor(
+    private cookieService: CookieService,
+    private apiService: ApiService
+  ) {}
 
   ngOnInit(): void {
-    this.apiService.getUsuario(this.cookieService.get("userId")).subscribe({
+    this.apiService.getUsuario(this.cookieService.get('userId')).subscribe({
       next: async (res) => {
-        this.totalAPagar = res.money
-
-      }, error: (err) => {
-
-      }
-    })
+        this.user = res;
+      },
+      error: (err) => {},
+    });
   }
 
   changeVisibility() {

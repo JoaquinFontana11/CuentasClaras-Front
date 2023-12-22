@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-group-detail',
   standalone: true,
-  imports: [CommonModule , FormsModule],
+  imports: [CommonModule, FormsModule],
   template: `
     <div class="container mx-auto my-8">
       <h1
@@ -40,19 +40,21 @@ import { FormsModule } from '@angular/forms';
           <div
             class="shadow-lg absolute top-0 left-0 mt-2 bg-gray-600 border-gray-700 rounded-lg p-4 z-20"
           >
-          <form (submit)="sendInvitation()" >
-            <input
-              type="email"
-              id="inviteEmail"
-              class="border rounded px-2 py-1 w-64"
-              placeholder="Ingrese el correo electrónico"
-              [(ngModel)]="inviteEmail"
-              name="inviteEmail"
-            />
-            <input type="submit" value="Enviar"
-              class="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-            />
-          </form>
+            <form (submit)="sendInvitation()">
+              <input
+                type="email"
+                id="inviteEmail"
+                class="border rounded px-2 py-1 w-64"
+                placeholder="Ingrese el correo electrónico"
+                [(ngModel)]="inviteEmail"
+                name="inviteEmail"
+              />
+              <input
+                type="submit"
+                value="Enviar"
+                class="bg-blue-500 text-white px-4 py-2 rounded mt-2"
+              />
+            </form>
           </div>
         </div>
       </div>
@@ -67,9 +69,7 @@ import { FormsModule } from '@angular/forms';
           <caption class="text-4xl font-bold text-gray-900 ">
             Miembros del grupo.
           </caption>
-          <thead
-            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
-          >
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 ">
             <tr>
               <th scope="col" class="px-6 py-3">Nombre.</th>
               <th scope="col" class="px-6 py-3">Apellido.</th>
@@ -78,9 +78,7 @@ import { FormsModule } from '@angular/forms';
           </thead>
           <tbody>
             @for (item of grupo.members; track item.id) {
-            <tr
-              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700  "
-            >
+            <tr class="bg-white border-b  ">
               <td class="w-4 p-4">>{{ item.name }}</td>
               <td class="w-4 p-4">>{{ item.lastName }}</td>
               <td class="w-4 p-4">>{{ item.userName }}</td>
@@ -99,17 +97,17 @@ import { FormsModule } from '@angular/forms';
           Historial de gastos del grupo.
         </caption>
         <thead
-          class="text-xs text-gray-700 uppercase bg-blue-950 bg-blue-400 dark:text-gray-400"
+          class="text-xs text-gray-700 uppercase bg-gray-50 dark:text-gray-400"
         >
           <tr>
-            <th scope="col" class="p-4">>Monto</th>
-            <th scope="col" class="p-4">>Comprobante</th>
-            <th scope="col" class="p-4">>Categoria del gasto</th>
+            <th scope="col" class="p-4">Monto</th>
+            <th scope="col" class="p-4">Comprobante</th>
+            <th scope="col" class="p-4">Categoria del gasto</th>
           </tr>
         </thead>
         <tbody>
           @for (item of gastosGrupos; track item.id) {
-          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700  ">
+          <tr class="bg-white border-b ">
             <td class="w-4 p-4">>{{ item.amount }}</td>
             <td class="w-4 p-4">>{{ item.img }}</td>
             <td class="w-4 p-4">>{{ item.category.name }}</td>
@@ -128,14 +126,12 @@ export class GroupDetailComponent {
   categoria: any;
   showList: boolean = false;
   inviteEmail: any;
-  inviteUser:any;
+  inviteUser: any;
   id!: number;
   constructor(private route: ActivatedRoute, private api: ApiService) {}
 
   ngOnInit() {
     this.routeSub = this.route.params.subscribe((params) => {
-      console.log(params);
-      console.log(params['id']);
       this.id = params['id'];
     });
     this.obtenerDetalle();
@@ -144,19 +140,14 @@ export class GroupDetailComponent {
 
   obtenerDetalle() {
     this.api.groupDetail(this.id).subscribe((detalle) => {
-      console.log('DETALLE ENDPOINT' + detalle);
       this.grupo = detalle;
     });
-    console.log('DETALLE' + this.grupo);
   }
 
   obtenerGastos() {
     this.api.groupExpenses(this.id).subscribe((gastos) => {
-      console.log('GASTOS DEL GRUPO' + gastos);
       this.gastosGrupos = gastos;
     });
-    console.log('gastos del grupo' + this.gastosGrupos);
-    console.log();
   }
 
   toggleList() {
@@ -164,16 +155,15 @@ export class GroupDetailComponent {
   }
 
   sendInvitation() {
-    console.log(this.inviteEmail)
     this.api.getUserByEmail(this.inviteEmail).subscribe({
-      next:async (res) => {
-          console.log('USUARIO QUE TRAJE CON MAIL' + res.id);
-          this.inviteUser = res;
-          this.api.sendInvitation(this.grupo.name,res.id,this.grupo.id).subscribe((user) => {});
-          this.showList = false;
-       },error:(err)=>{
-      }
-
-    })
+      next: async (res) => {
+        this.inviteUser = res;
+        this.api
+          .sendInvitation(this.grupo.name, res.id, this.grupo.id)
+          .subscribe((user) => {});
+        this.showList = false;
+      },
+      error: (err) => {},
+    });
   }
 }

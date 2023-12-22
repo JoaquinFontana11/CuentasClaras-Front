@@ -14,16 +14,16 @@ import { ExpensesNewComponent } from './expenses-new/expenses-new.component';
 import { ExpensesEditComponent } from './expenses-edit/expenses-edit.component';
 
 export const routes: Routes = [
-  { path: '', component: HomeComponent},
+  { path: '', component: HomeComponent },
   { path: 'login', component: SectionLoginComponent },
-  { path: 'grupos/editar/:id', component: GroupEditComponent},
+  { path: 'grupos/editar/:id', component: GroupEditComponent },
   { path: 'grupos', component: GroupsComponent },
   { path: 'grupos/detalle/:id', component: GroupDetailComponent },
   { path: 'pagos', component: PaymentsComponent },
   { path: 'grupos/nuevo', component: GroupNewComponent },
   { path: 'grupos/invitaciones', component: GroupInvitationsComponent },
-  { path:  'register', component:SectionRegisterComponent},
+  { path: 'register', component: SectionRegisterComponent },
   { path: 'gastos', component: ExpensesComponent },
   { path: 'gastos/nuevo', component: ExpensesNewComponent },
-
+  { path: 'gastos/editar/:id', component: ExpensesEditComponent },
 ];

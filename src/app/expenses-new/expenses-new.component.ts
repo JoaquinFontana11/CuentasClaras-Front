@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApiService } from '../service/api.service';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-expenses-new',
@@ -215,7 +217,7 @@ import { ApiService } from '../service/api.service';
           } @else {
           <div class="flex flex-row gap-2 mb-5">
             <div class="flex flex-row gap-2 items-center">
-              <label class="font-semibold" for="user">Usuario</label>
+              <label class="font-semibold" for="user">Usuario Destino</label>
               <select
                 class="w-28"
                 name="onlyUser"
@@ -388,7 +390,11 @@ export class ExpensesNewComponent implements OnInit {
   allUsers: any[] = [];
   group = { members: [{ id_user: 0, userName: '' }] };
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private router: Router,
+    public cookieService: CookieService
+  ) {}
 
   ngOnInit(): void {
     this.apiService.getCategories().subscribe((categories) => {
@@ -397,9 +403,11 @@ export class ExpensesNewComponent implements OnInit {
       });
     });
 
-    this.apiService.getUser(5).subscribe((user) => {
-      this.user = user;
-    });
+    this.apiService
+      .getUser(this.cookieService.get('userId'))
+      .subscribe((user) => {
+        this.user = user;
+      });
 
     this.apiService.getAllUsers().subscribe((users) => {
       this.allUsers = users;
@@ -419,40 +427,32 @@ export class ExpensesNewComponent implements OnInit {
   }
 
   addManPercentaje() {
-    console.log(this.manPercentaje);
     const obj = {
       member_id: this.manPercentaje.value.member!,
       percentaje: this.manPercentaje.value.percentaje!,
     };
     this.expense.value['manPercentaje']?.push(obj);
-    console.log(this.expense.value['manPercentaje']);
   }
 
   addManAmount() {
-    console.log(this.manAmount);
     const obj = {
       member_id: this.manAmount.value.member!,
       amount: this.manAmount.value.amount!,
     };
     this.expense.value['manAmount']?.push(obj);
-    console.log(this.expense.value['manAmount']);
   }
 
   addAmountUser() {
-    console.log(this.amountUsers.value);
-    console.log(this.group.members);
     const obj = {
       user_id: this.amountUsers.value.user!,
       amount: this.amountUsers.value.amount!,
     };
 
     this.expense.value['amountUsers']?.push(obj);
-    console.log(this.expense.value['amountUsers']);
   }
 
   setDivisions(divisionType: string, amount: number) {
     const divisions: any[] = [];
-    console.log(divisionType, amount);
     switch (divisionType) {
       case 'Equals %': {
         this.group.members.forEach((member) => {
@@ -553,11 +553,7 @@ export class ExpensesNewComponent implements OnInit {
         };
         body.amountUsers.push(newAmount);
 
-        this.apiService
-          .addMoney(amount.user_id, amount.amount)
-          .subscribe((res: any) => {
-            console.log(res);
-          });
+        this.apiService.addMoney(amount.user_id, amount.amount).subscribe();
       });
 
       body.divisions = this.setDivisions(
@@ -574,9 +570,7 @@ export class ExpensesNewComponent implements OnInit {
 
       this.apiService
         .addMoney(this.user.id, this.expense.value['my-amount'])
-        .subscribe((res: any) => {
-          console.log(res);
-        });
+        .subscribe();
 
       const div = {
         amount: this.expense.value['user-amount'],
@@ -587,11 +581,8 @@ export class ExpensesNewComponent implements OnInit {
       body.divisions.push(div);
     }
 
-    console.log(this.expense.value);
-    console.log(body);
+    this.apiService.setExpense(body).subscribe();
 
-    this.apiService.setExpense(body).subscribe((res: any) => {
-      console.log(res);
-    });
+    this.router.navigate(['/']);
   }
 }

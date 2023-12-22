@@ -2,13 +2,15 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../service/api.service';
 import { OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, delay } from 'rxjs';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-section-login',
   standalone: true,
-  imports: [FormsModule,CommonModule],
+  imports: [FormsModule, CommonModule],
   template: `
     <section class="bg-gray-50 ">
       <div
@@ -23,38 +25,60 @@ import { CommonModule } from '@angular/common';
             >
               Crear grupo
             </h1>
-            <form class="space-y-4 md:space-y-6" (ngSubmit)="crear()" #groupForm="ngForm">
-    <!-- ... -->
-    <div>
-      <label for="nombre" class="block mb-2 text-sm font-medium text-gray-900 "><span class="text-red-500">(**)</span> Nombre</label>
-      <input
-        type="text"
-        name="nombre"
-        id="nombre"
-        [(ngModel)]="nombre"
-        #nombreInput="ngModel"
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-        placeholder="Nombre del grupo."
-        required=""
-      />
-    </div>
-    <div>
-      <label for="categoria" class="block mb-2 text-sm font-medium text-gray-900 "><span class="text-red-500">(**)</span> Categoría</label>
-      <select
-        [(ngModel)]="cat"
-        name="categoria"
-        id="categoria"
-        placeholder="Seleccione una categoría"
-        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
-        required
-      >
-        <option value="">Seleccione una categoría</option>
-        <option *ngFor="let categoria of categorias" [value]="categoria.name">{{ categoria.name }}</option>
-      </select>
-    </div>
-    <button type="submit" [hidden]="groupForm.invalid" class="text-white bg-blue-500 px-4 py-2 rounded hover:bg-blue-700 mt-auto">Crear</button>
-
-  </form>
+            <form
+              class="space-y-4 md:space-y-6"
+              (ngSubmit)="crear()"
+              #groupForm="ngForm"
+            >
+              <!-- ... -->
+              <div>
+                <label
+                  for="nombre"
+                  class="block mb-2 text-sm font-medium text-gray-900 "
+                  ><span class="text-red-500">(**)</span> Nombre</label
+                >
+                <input
+                  type="text"
+                  name="nombre"
+                  id="nombre"
+                  [(ngModel)]="nombre"
+                  #nombreInput="ngModel"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  placeholder="Nombre del grupo."
+                  required=""
+                />
+              </div>
+              <div>
+                <label
+                  for="categoria"
+                  class="block mb-2 text-sm font-medium text-gray-900 "
+                  ><span class="text-red-500">(**)</span> Categoría</label
+                >
+                <select
+                  [(ngModel)]="cat"
+                  name="categoria"
+                  id="categoria"
+                  placeholder="Seleccione una categoría"
+                  class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 "
+                  required
+                >
+                  <option value="">Seleccione una categoría</option>
+                  <option
+                    *ngFor="let categoria of categorias"
+                    [value]="categoria.name"
+                  >
+                    {{ categoria.name }}
+                  </option>
+                </select>
+              </div>
+              <button
+                type="submit"
+                [hidden]="groupForm.invalid"
+                class="text-white bg-blue-500 px-4 py-2 rounded hover:bg-blue-700 mt-auto"
+              >
+                Crear
+              </button>
+            </form>
           </div>
         </div>
       </div>
@@ -65,16 +89,32 @@ import { CommonModule } from '@angular/common';
 export class GroupNewComponent {
   nombre: string = '';
   cat: string = '';
-  categorias :any[] = [];
+  categorias: any[] = [];
   ngOnInit(): void {
     this.obtenerCategorias();
   }
-  constructor(private api: ApiService) {}
+  constructor(
+    private api: ApiService,
+    private router: Router,
+    public cookieService: CookieService
+  ) {}
 
   crear() {
-    this.api
-      .saveGroup(this.nombre,this.cat)
-      .subscribe() 
+    this.api.saveGroup(this.nombre, this.cat).subscribe(() => {
+      this.api.getGroupByName(this.nombre).subscribe((group) => {
+        this.api
+          .sendInvitation(
+            this.nombre,
+            this.cookieService.get('userId'),
+            group.id
+          )
+          .subscribe((invitation) => {
+            this.api.acceptInvitation(invitation.id).subscribe();
+          });
+      });
+    });
+
+    this.router.navigate(['/']);
   }
 
   obtenerCategorias() {
@@ -82,5 +122,4 @@ export class GroupNewComponent {
       this.categorias = categorias;
     });
   }
-
 }

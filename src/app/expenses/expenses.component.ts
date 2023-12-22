@@ -66,6 +66,5 @@ export class ExpensesComponent implements OnInit {
     this.apiService.getExpenses(user_id).subscribe((expenses) => {
       this.expenses = expenses;
     });
-    console.log(this.expenses);
   }
 }

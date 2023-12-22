@@ -37,21 +37,22 @@ import { CookieService } from 'ngx-cookie-service';
   styles: ``,
 })
 export class GroupsComponent {
-  groups : any [] =[]
+  groups: any[] = [];
 
   groupName = '';
 
-  constructor(private api: ApiService,private cookieService:CookieService) {}
+  constructor(private api: ApiService, private cookieService: CookieService) {}
 
-  ngOnInit(){
+  ngOnInit() {
     this.obtenerGrupos();
   }
 
   obtenerGrupos() {
-    this.api.getUsuario(this.cookieService.get("userId")).subscribe((usuario) => {
-      this.groups = usuario.groups;
-    });
-    console.log('GRupos' + this.groups);
+    this.api
+      .getUsuario(this.cookieService.get('userId'))
+      .subscribe((usuario) => {
+        this.groups = usuario.groups;
+      });
   }
 
   redirect(groupId: number) {}

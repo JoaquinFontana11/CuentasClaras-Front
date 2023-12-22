@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ApiService } from '../service/api.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-expenses-edit',
@@ -166,7 +166,11 @@ export class ExpensesEditComponent implements OnInit {
   categories: any[] = [];
   user = { id: 0, userName: '', groups: [{ id: 0, name: '' }] };
 
-  constructor(private apiService: ApiService, private route: ActivatedRoute) {}
+  constructor(
+    private apiService: ApiService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     let idUrl: any;
@@ -176,7 +180,6 @@ export class ExpensesEditComponent implements OnInit {
 
     this.apiService.getExpense(idUrl * 1).subscribe((expense) => {
       this.oldExpense = expense;
-      console.log(expense);
       this.newExpense.get('amount')?.setValue(expense.amount);
       this.newExpense.get('img')?.setValue(expense.img);
       this.newExpense.get('category')?.setValue(expense.category.name);
@@ -225,8 +228,8 @@ export class ExpensesEditComponent implements OnInit {
       body.cantRecurrency = this.newExpense.value.cantRecurrency!;
     }
 
-    this.apiService.editExpense(body).subscribe((res: any) => {
-      console.log(res);
-    });
+    this.apiService.editExpense(body).subscribe();
+
+    this.router.navigate(['/']);
   }
 }
