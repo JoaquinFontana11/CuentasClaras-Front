@@ -98,13 +98,4 @@ export class SectionPaymentsComponent implements OnInit {
       }
     })
   }
-
-
-
-  dateOptions = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  };
 }

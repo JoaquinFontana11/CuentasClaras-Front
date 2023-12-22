@@ -15,29 +15,30 @@ import { Router } from '@angular/router';
     SectionPaymentsComponent,
   ],
   template: `
+    @if (this.cookieService.get("userId")){
     <app-section-money />
     <hr class="border-2 my-5" />
     <app-section-groups />
     <hr class="border-2 my-5" />
     <app-section-payments />
+    } @else {
+      <section class="w-full flex flex-col gap-2">
+        <p class="font-bold text-xl">Bienvenido a Cuentas Claras</p>
+        <p class="font-semibold text-xl">Para acceder a todas las funcionalidades, por favor Inicia Sesion!</p>
+      </section>
+    }
   `,
   styles: ``,
 })
 export class HomeComponent implements OnInit {
   usuarios: any[] = [];
 
-  constructor(private apiService: ApiService, private cookieService: CookieService, private router: Router) { }
+  constructor(private apiService: ApiService, public cookieService: CookieService, private router: Router) { }
 
   ngOnInit(): void {
-    this.obtenerUsuarios();
-    if (!this.cookieService.get("userId")) {
+    if(!this.cookieService.get("userId")){
       this.router.navigate(["/login"]);
     }
   }
 
-  obtenerUsuarios() {
-    this.apiService.getUsuarios().subscribe((usuarios) => {
-      this.usuarios = usuarios;
-    });
-  }
 }

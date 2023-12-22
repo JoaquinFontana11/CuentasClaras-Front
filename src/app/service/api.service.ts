@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { writeFileSync } from 'fs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,8 +11,12 @@ export class ApiService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsuarios(): Observable<any> {
-    return this.http.get<any>(this.urlApi + '/users/findAll');
+  public getAllUsers(): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/users/findAll`);
+  }
+
+  public getUser(id: number): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/users/find/${id}`);
   }
 
   public getUsuario(id: string): Observable<any> {
@@ -73,7 +78,7 @@ export class ApiService {
     });
   }
 
-  public getExpenses(id: string): Observable<any> {
+  public getExpenses(id: any): Observable<any> {
     return this.http.get<any>(`http://localhost:8080/expenses/finByUser/` + id);
   }
 
@@ -94,5 +99,37 @@ export class ApiService {
       password: password,
       money: 0
     })
+  }
+
+
+  public getGroupByName(name: String): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/group/findByName/${name}`);
+  }
+
+  public getGroupByID(id: number): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/group/find/${id}`);
+  }
+
+
+
+  public getExpense(id: number): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/expenses/find/${id}`);
+  }
+
+  public setExpense(body: any): Observable<any> {
+    console.log(body);
+    return this.http.post<any>('http://localhost:8080/expenses/save', body);
+  }
+
+  public editExpense(body: any): Observable<any> {
+    console.log(body);
+    return this.http.post<any>('http://localhost:8080/expenses/edit', body);
+  }
+
+  public addMoney(user_id: number, cant: number): Observable<any> {
+    return this.http.post<any>(
+      `http://localhost:8080/users/addMoney/${user_id}`,
+      cant
+    );
   }
 }

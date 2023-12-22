@@ -8,6 +8,8 @@ export class logged implements CanActivate {
     constructor(private cookieService: CookieService, private router: Router) { }
 
     canActivate(): boolean {
+        console.log(this.cookieService.getAll());
+        console.log(this.cookieService.get("userId"));
         if (this.cookieService.get("userId")) {
             return true;
         } else {

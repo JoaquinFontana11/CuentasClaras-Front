@@ -9,15 +9,21 @@ import { GroupInvitationsComponent } from './group-invitations/group-invitations
 import { GroupEditComponent } from './group-edit/group-edit.component';
 import { SectionRegisterComponent } from './section-register/section-register.component';
 import { logged } from './guards/logged';
+import { ExpensesComponent } from './expenses/expenses.component';
+import { ExpensesNewComponent } from './expenses-new/expenses-new.component';
+import { ExpensesEditComponent } from './expenses-edit/expenses-edit.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: SectionLoginComponent },
-  { path: 'grupos/editar/:id', component: GroupEditComponent, }
-  { path: 'grupos', component: GroupsComponent ,canActivate:[logged]},
-  { path: 'grupos/detalle/:id', component: GroupDetailComponent,canActivate:[logged] },
-  { path: 'pagos', component: PaymentsComponent,canActivate:[logged] },
-  { path: 'grupos/nuevo', component: GroupNewComponent ,canActivate:[logged]},
-  { path: 'grupos/invitaciones', component: GroupInvitationsComponent,canActivate:[logged] },
-  { path:  'register', component:SectionRegisterComponent}
+  { path: 'grupos/editar/:id', component: GroupEditComponent},
+  { path: 'grupos', component: GroupsComponent },
+  { path: 'grupos/detalle/:id', component: GroupDetailComponent },
+  { path: 'pagos', component: PaymentsComponent },
+  { path: 'grupos/nuevo', component: GroupNewComponent },
+  { path: 'grupos/invitaciones', component: GroupInvitationsComponent },
+  { path:  'register', component:SectionRegisterComponent},
+  { path: 'gastos', component: ExpensesComponent },
+  { path: 'gastos/nuevo', component: ExpensesNewComponent },
+
 ];

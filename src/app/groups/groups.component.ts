@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ApiService } from '../service/api.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-groups',
@@ -36,26 +37,22 @@ import { Router } from '@angular/router';
   styles: ``,
 })
 export class GroupsComponent {
-  groups = [
-    {
-      id: 0,
-      name: 'Grupo 1',
-    },
-    {
-      id: 1,
-      name: 'Grupo 2',
-    },
-    {
-      id: 2,
-      name: 'Grupo 3',
-    },
-    {
-      id: 3,
-      name: 'Grupo 4',
-    },
-  ];
+  groups : any [] =[]
 
   groupName = '';
+
+  constructor(private api: ApiService,private cookieService:CookieService) {}
+
+  ngOnInit(){
+    this.obtenerGrupos();
+  }
+
+  obtenerGrupos() {
+    this.api.getUsuario(this.cookieService.get("userId")).subscribe((usuario) => {
+      this.groups = usuario.groups;
+    });
+    console.log('GRupos' + this.groups);
+  }
 
   redirect(groupId: number) {}
 }
