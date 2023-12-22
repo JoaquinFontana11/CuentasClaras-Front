@@ -26,10 +26,6 @@ export class ApiService {
     });
   }
 
-  public getExpenses(user_id: number): Observable<any> {
-    return this.http.get<any>(this.urlApi + '/expenses/findByUser/' + user_id);
-  }
-
   public getCategories(): Observable<any> {
     return this.http.get<any>(`${this.urlApi}/category/findAll`);
   }
@@ -42,8 +38,21 @@ export class ApiService {
     return this.http.get<any>(`${this.urlApi}/group/find/${id}`);
   }
 
+  public getExpenses(user_id: number): Observable<any> {
+    return this.http.get<any>(this.urlApi + '/expenses/findByUser/' + user_id);
+  }
+
+  public getExpense(id: number): Observable<any> {
+    return this.http.get<any>(`${this.urlApi}/expenses/find/${id}`);
+  }
+
   public setExpense(body: any): Observable<any> {
     console.log(body);
     return this.http.post<any>('http://localhost:8080/expenses/save', body);
+  }
+
+  public editExpense(body: any): Observable<any> {
+    console.log(body);
+    return this.http.post<any>('http://localhost:8080/expenses/edit', body);
   }
 }

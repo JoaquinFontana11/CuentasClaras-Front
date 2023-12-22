@@ -4,6 +4,7 @@ import {
   FormGroup,
   FormsModule,
   ReactiveFormsModule,
+  Validators,
 } from '@angular/forms';
 import { ApiService } from '../service/api.service';
 
@@ -12,8 +13,8 @@ import { ApiService } from '../service/api.service';
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule],
   template: `
-    <section class="flex flex-col justify-center items-center w-full gap-5">
-      <div class="w-5/6 bg-slate-200 rounded-lg shadow-lg p-10">
+    <section class="flex flex-row justify-center gap-2 w-full mx-1">
+      <div class="w-5/6 bg-slate-200 rounded-lg shadow-lg p-6">
         <form
           [formGroup]="expense"
           (ngSubmit)="submit()"
@@ -26,60 +27,88 @@ import { ApiService } from '../service/api.service';
               <option value="user">Usuario</option>
             </select>
           </div>
-          @if (expense.value.type) { @if (expense.value.type === "group") {
-          <div>
-            <label for="groupOwner">Grupo</label>
-            <select
-              name="groupOwner"
-              id="groupOwner"
-              formControlName="groupOwner"
-            >
-              @for (group of user.groups; track group.name) {
-              <option value="{{ group.id }}">
-                {{ group.name }}
-              </option>
-              }
-            </select>
-          </div>
-          } @else {
-          <div>
-            <label for="userOwner">Usuario</label>
-            <select name="userOwner" id="uerOwner" formControlName="userOwner">
-              <option value="{{ user.id }}">
-                {{ user.userName }}
-              </option>
-            </select>
-          </div>
-          }
-          <div>
-            <label for="amount">Precio</label>
-            <input
-              type="number"
-              id="amount"
-              name="amount"
-              formControlName="amount"
-            />
-          </div>
-          <div>
-            <label for="img">Imagen</label>
-            <input type="text" id="img" name="img" formControlName="img" />
-          </div>
-          <div>
-            <label for="category">Categoria</label>
-            <select name="categroy" id="category" formControlName="category">
-              @for (category of categories; track category.name) {
-              <option value="{{ category.name }}">
-                {{ category.name }}
-              </option>
-              }
-            </select>
-          </div>
+          @if (expense.value.type) {
 
-          @if(expense.value.type === "group" && expense.value.groupOwner ) {
-          <div class="flex flex-row gap-2 mb-5">
-            <div>
-              <label for="divison">Tipo de Division</label>
-              <select name="division" id="divison" formControlName="division">
+          <div class="flex flex-row gap-5 w-full">
+            @if (expense.value.type === "group") {
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="groupOwner">Grupo</label>
+              <select
+                class="w-20"
+                name="groupOwner"
+                id="groupOwner"
+                formControlName="groupOwner"
+              >
+                @for (group of user.groups; track group.name) {
+                <option value="{{ group.id }}">
+                  {{ group.name }}
+                </option>
+                }
+              </select>
+            </div>
+            } @else {
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="userOwner">Usuario</label>
+              <select
+                class="w-20"
+                name="userOwner"
+                id="uerOwner"
+                formControlName="userOwner"
+              >
+                <option value="{{ user.id }}">
+                  {{ user.userName }}
+                </option>
+              </select>
+            </div>
+            }
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="amount">Precio</label>
+              <input
+                class="w-16"
+                type="number"
+                id="amount"
+                name="amount"
+                formControlName="amount"
+              />
+            </div>
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="img">Imagen</label>
+              <input
+                class="w-32"
+                type="text"
+                id="img"
+                name="img"
+                formControlName="img"
+              />
+            </div>
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="category">Categoria</label>
+              <select
+                class="w-20"
+                name="categroy"
+                id="category"
+                formControlName="category"
+              >
+                @for (category of categories; track category.name) {
+                <option value="{{ category.name }}">
+                  {{ category.name }}
+                </option>
+                }
+              </select>
+            </div>
+          </div>
+          @if(expense.value.type === "group") {
+          <div class="flex flex-row gap-8 items-start w-full">
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="divison"
+                >Tipo de Division</label
+              >
+              <select
+                class="w-32 h-6"
+                name="division"
+                id="divison"
+                formControlName="division"
+              >
                 <option value="Equals %">Equitativo %</option>
                 <option value="Equals amount">Equitativo Monto</option>
                 <option value="Manual %">Manual %</option>
@@ -87,9 +116,12 @@ import { ApiService } from '../service/api.service';
               </select>
             </div>
             @switch (expense.value.division) { @case ("Equals %") {
-            <div>
-              <label for="eq-percentaje">Porcentaje</label>
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="eq-percentaje"
+                >Porcentaje</label
+              >
               <input
+                class="w-20"
                 type="number"
                 id="eq-percentaje"
                 name="eq-percentaje"
@@ -97,9 +129,10 @@ import { ApiService } from '../service/api.service';
               />
             </div>
             } @case ("Equals amount") {
-            <div>
-              <label for="eq-amount">Monto</label>
+            <div class="flex flex-row gap-2 mb-5">
+              <label class="font-semibold" for="eq-amount">Monto</label>
               <input
+                class="w-20"
                 type="number"
                 id="eq-amount"
                 name="eq-amount"
@@ -107,87 +140,147 @@ import { ApiService } from '../service/api.service';
               />
             </div>
             } @case ("Manual %") {
-            <div>
-              <form [formGroup]="manPercentaje" (ngSubmit)="addManPercentaje()">
-                <span>Miembro</span>
-                <select name="member" id="member" formControlName="member">
-                  @for (member of group.members; track $index) {
-                  <option value="{{ member.id_user }}">
-                    {{ member.userName }}
-                  </option>
-                  }
-                </select>
-                <label for="percentaje">Monto</label>
-                <input
-                  type="number"
-                  id="percentaje"
-                  name="percentaje"
-                  formControlName="percentaje"
-                />
-                <input type="submit" value="+" />
-              </form>
-            </div>
+            <form
+              class="flex flex-row gap-2 justify-center"
+              [formGroup]="manPercentaje"
+              (ngSubmit)="addManPercentaje()"
+            >
+              <label class="font-semibold" for="memeber">Miembro</label>
+              <select
+                class="w-24"
+                name="member"
+                id="member"
+                formControlName="member"
+              >
+                @for (member of group.members; track $index) {
+                <option value="{{ member.id_user }}">
+                  {{ member.userName }}
+                </option>
+                }
+              </select>
+              <label class="font-semibold" for="percentaje">Monto</label>
+              <input
+                class="w-16"
+                type="number"
+                id="percentaje"
+                name="percentaje"
+                formControlName="percentaje"
+              />
+              <input
+                class="border-1 border-green-400 bg-green-600 hover:bg-green-500 rounded-full w-6 h-6 flex justify-center shadow-lg"
+                type="submit"
+                value="+"
+              />
+              <span
+                >Añadidos: {{ this.expense.value.manPercentaje?.length }}</span
+              >
+            </form>
             } @case ("Manual amount") {
-            <div>
-              <div>
-                <form [formGroup]="manAmount" (ngSubmit)="addManAmount()">
-                  <span>Miembro</span>
-                  <select name="member" id="member" formControlName="member">
-                    @for (member of group.members; track $index) {
-                    <option value="{{ member.id_user }}">
-                      {{ member.userName }}
-                    </option>
-                    }
-                  </select>
+            <form
+              class="flex flex-row gap-2 mb-5"
+              [formGroup]="manAmount"
+              (ngSubmit)="addManAmount()"
+            >
+              <label class="font-semibold" for="member">Miembro</label>
+              <select
+                class="w-24"
+                name="member"
+                id="member"
+                formControlName="member"
+              >
+                @for (member of group.members; track $index) {
+                <option value="{{ member.id_user }}">
+                  {{ member.userName }}
+                </option>
+                }
+              </select>
 
-                  <label for="amount">Monto</label>
-                  <input
-                    type="number"
-                    id="amount"
-                    name="amount"
-                    formControlName="amount"
-                  />
-                  <input type="submit" value="+" />
-                </form>
-              </div>
-            </div>
+              <label class="font-semibold" for="amount">Monto</label>
+              <input
+                class="w-16"
+                type="number"
+                id="amount"
+                name="amount"
+                formControlName="amount"
+              />
+              <input
+                class="border-1 border-green-400 bg-green-600 hover:bg-green-500 rounded-full w-6 h-6 flex justify-center shadow-lg"
+                type="submit"
+                value="+"
+              />
+              <span>Añadidos: {{ this.expense.value.manAmount?.length }}</span>
+            </form>
             }}
           </div>
           } @else {
-          <div>
-            <label for="user-amount">Monto</label>
-            <input
-              type="number"
-              id="user-amount"
-              name="user-amount"
-              formControlName="user-amount"
-            />
+          <div class="flex flex-row gap-2 mb-5">
+            <div class="flex flex-row gap-2 items-center">
+              <label class="font-semibold" for="user">Usuario</label>
+              <select
+                class="w-28"
+                name="onlyUser"
+                id="onlyUser"
+                formControlName="onlyUser"
+              >
+                @for (user of allUsers; track user.id) {
+                <option value="{{ user.id }}">
+                  {{ user.userName }}
+                </option>
+                }
+              </select>
+            </div>
+            <div class="flex flex-row gap-2 mb-2">
+              <label class="font-semibold" for="user-amount">Monto</label>
+              <input
+                class="w-16"
+                type="number"
+                id="user-amount"
+                name="user-amount"
+                formControlName="user-amount"
+              />
+            </div>
           </div>
           } @if (expense.value.type === "group") {
-          <div>
-            <form [formGroup]="amountUsers" (ngSubmit)="addAmountUser()">
-              <label>Usuario que aporto</label>
-              <select name="user" id="user" formControlName="user">
+
+          <form
+            class="flex flex-row gap-5 items-center mb-5"
+            [formGroup]="amountUsers"
+            (ngSubmit)="addAmountUser()"
+          >
+            <div class="flex flex-row gap-2 items-center">
+              <label class="font-semibold" for="user">Usuario que aporto</label>
+              <select class="w-28" name="user" id="user" formControlName="user">
                 @for (member of group.members; track member.id_user) {
                 <option value="{{ member.id_user }}">
                   {{ member.userName }}
                 </option>
                 }
               </select>
-              <label for="amount">Monto</label>
+            </div>
+            <div class="flex flex-row gap-5 items-center">
+              <label class="font-semibold" for="amount">Monto</label>
               <input
+                class="w-16"
                 type="number"
                 id="amount"
                 name="amount"
                 formControlName="amount"
               />
-              <input type="submit" value="+" />
-            </form>
-          </div>
+              <input
+                class="border-1 border-green-400 bg-green-600 hover:bg-green-500 rounded-full w-6 h-6 flex justify-center shadow-lg"
+                type="submit"
+                value="+"
+              />
+              <span
+                >Añadidos: {{ this.expense.value.amountUsers?.length }}</span
+              >
+            </div>
+          </form>
           } @else {
-          <div>
-            <label for="my-amount">Lo aportado</label>
+          <div class="flex flex-row gap-2 mb-5">
+            <label class="font-semibold" for="my-amount">Lo aportado</label>
             <input
+              class="w-16"
               type="number"
               id="my-amount"
               name="my-amount"
@@ -196,37 +289,53 @@ import { ApiService } from '../service/api.service';
           </div>
           }
 
-          <div>
-            <label for="recurent">Recurrente</label>
-            <select name="recurrent" id="recurrent" formControlName="recurrent">
-              <option value="{{ true }}">Si</option>
-              <option value="{{ false }}">No</option>
-            </select>
+          <div class="flex flex-row gap-5 w-full mb-5">
+            <div class="flex flex-row gap-2">
+              <label class="font-semibold" for="recurent">Recurrente</label>
+              <select
+                class="w-12"
+                name="recurrent"
+                id="recurrent"
+                formControlName="recurrent"
+              >
+                <option value="{{ true }}">Si</option>
+                <option value="{{ false }}">No</option>
+              </select>
+            </div>
+            @if(expense.value.recurrent) {
+            <div class="flex flex-row gap-2">
+              <label class="font-semibold" for="recurrency">Lapso</label>
+              <select
+                class="w-24"
+                name="recurrency"
+                id="recurrency"
+                formControlName="recurrency"
+              >
+                <option value="semanal">Semanal</option>
+                <option value="mensual">Mensual</option>
+                <option value="anual">Anual</option>
+              </select>
+            </div>
+            <div class="flex flex-row gap-2">
+              <label class="font-semibold" for="cantRecurrencia"
+                >Veces que se repite</label
+              >
+              <input
+                class="w-16"
+                type="number"
+                id="cantRecurrency"
+                name="cantRecurrency"
+                formControlName="cantRecurrency"
+              />
+            </div>
+            }
           </div>
-          @if(expense.value.recurrent) {
-          <div>
-            <label for="recurrency">Lapso</label>
-            <select
-              name="recurrency"
-              id="recurrency"
-              formControlName="recurrency"
-            >
-              <option value="semanal">Semanal</option>
-              <option value="mensual">Mensual</option>
-              <option value="anual">Anual</option>
-            </select>
-          </div>
-          <div>
-            <label for="cantRecurrencia">Veces que se repite</label>
-            <input
-              type="number"
-              id="cantRecurrency"
-              name="cantRecurrency"
-              formControlName="cantRecurrency"
-            />
-          </div>
-          } }
-          <input type="submit" value="Enviar" />
+          }
+          <input
+            class="border-1 border-green-400 bg-green-600 hover:bg-green-500 rounded-md py-2 px-5 flex justify-center shadow-lg text-white"
+            type="submit"
+            value="Enviar"
+          />
         </form>
       </div>
     </section>
@@ -235,42 +344,43 @@ import { ApiService } from '../service/api.service';
 })
 export class ExpensesNewComponent implements OnInit {
   expense = new FormGroup({
-    type: new FormControl(null),
-    amount: new FormControl(0),
-    img: new FormControl(''),
-    recurrent: new FormControl(false),
-    recurrency: new FormControl(''),
-    cantRecurrency: new FormControl(0),
-    category: new FormControl(),
-    groupOwner: new FormControl(null),
-    userOwner: new FormControl(null),
+    type: new FormControl(null, Validators.required),
+    amount: new FormControl(0, Validators.required),
+    img: new FormControl(null, Validators.required),
+    recurrent: new FormControl(false, Validators.required),
+    recurrency: new FormControl(),
+    cantRecurrency: new FormControl(),
+    category: new FormControl(null, Validators.required),
+    groupOwner: new FormControl(),
+    userOwner: new FormControl(),
 
-    division: new FormControl(''),
+    division: new FormControl(),
     'eq-percentaje': new FormControl(),
     'eq-amount': new FormControl(),
-    'man-percentaje': new FormControl<
-      { member_id: number; percentaje: number }[]
-    >([]),
-    'man-amount': new FormControl<{ member_id: number; amount: number }[]>([]),
+    manPercentaje: new FormControl<{ member_id: number; percentaje: number }[]>(
+      []
+    ),
+    manAmount: new FormControl<{ member_id: number; amount: number }[]>([]),
 
-    'user-amount': new FormControl(0),
-    'my-amount': new FormControl(0),
-    'amount-users': new FormControl<{ user_id: number; amount: number }[]>([]),
+    onlyUser: new FormControl(),
+    'user-amount': new FormControl(),
+    'my-amount': new FormControl(),
+    amountUsers: new FormControl<{ user_id: number; amount: number }[]>([]),
   });
 
   manPercentaje = new FormGroup({
-    member: new FormControl(),
-    percentaje: new FormControl(),
+    member: new FormControl(null, Validators.required),
+    percentaje: new FormControl(null, Validators.required),
   });
 
   manAmount = new FormGroup({
-    member: new FormControl(0),
-    amount: new FormControl(0),
+    member: new FormControl(null, Validators.required),
+    amount: new FormControl(null, Validators.required),
   });
 
   amountUsers = new FormGroup({
-    user: new FormControl(0),
-    amount: new FormControl(0),
+    user: new FormControl(null, Validators.required),
+    amount: new FormControl(0, Validators.required),
   });
 
   categories: any[] = [];
@@ -314,8 +424,8 @@ export class ExpensesNewComponent implements OnInit {
       member_id: this.manPercentaje.value.member!,
       percentaje: this.manPercentaje.value.percentaje!,
     };
-    this.expense.value['man-percentaje']?.push(obj);
-    console.log(this.expense.value['man-percentaje']);
+    this.expense.value['manPercentaje']?.push(obj);
+    console.log(this.expense.value['manPercentaje']);
   }
 
   addManAmount() {
@@ -324,8 +434,8 @@ export class ExpensesNewComponent implements OnInit {
       member_id: this.manAmount.value.member!,
       amount: this.manAmount.value.amount!,
     };
-    this.expense.value['man-amount']?.push(obj);
-    console.log(this.expense.value['man-amount']);
+    this.expense.value['manAmount']?.push(obj);
+    console.log(this.expense.value['manAmount']);
   }
 
   addAmountUser() {
@@ -336,8 +446,8 @@ export class ExpensesNewComponent implements OnInit {
       amount: this.amountUsers.value.amount!,
     };
 
-    this.expense.value['amount-users']?.push(obj);
-    console.log(this.expense.value['amount-users']);
+    this.expense.value['amountUsers']?.push(obj);
+    console.log(this.expense.value['amountUsers']);
   }
 
   setDivisions(divisionType: string, amount: number) {
@@ -369,7 +479,7 @@ export class ExpensesNewComponent implements OnInit {
         break;
       }
       case 'Manual %': {
-        this.expense.value['man-percentaje']?.forEach((percentaje) => {
+        this.expense.value['manPercentaje']?.forEach((percentaje) => {
           const div = {
             amount: (percentaje.percentaje! / 100) * amount,
             userOwner: {
@@ -381,7 +491,7 @@ export class ExpensesNewComponent implements OnInit {
         break;
       }
       case 'Manual amount': {
-        this.expense.value['man-amount']?.forEach((amount) => {
+        this.expense.value['manAmount']?.forEach((amount) => {
           const div = {
             amount: amount.amount,
             userOwner: {
@@ -433,18 +543,36 @@ export class ExpensesNewComponent implements OnInit {
       body.groupOwner = { id: this.expense.value.groupOwner! };
     }
 
-    this.expense.value['amount-users']?.forEach((amount) => {
-      realAmount -= amount.amount;
+    if (this.expense.value.type! === 'group') {
+      this.expense.value['amountUsers']?.forEach((amount) => {
+        realAmount -= amount.amount;
+        const newAmount = {
+          amount: amount.amount,
+
+          userOwner: { id: amount.user_id },
+        };
+        body.amountUsers.push(newAmount);
+      });
+
+      body.divisions = this.setDivisions(
+        this.expense.value.division!,
+        realAmount
+      );
+    } else {
       const newAmount = {
-        amount: amount.amount,
-        userOwner: { id: amount.user_id },
+        amount: this.expense.value['my-amount'],
+
+        userOwner: { id: this.expense.value.userOwner },
       };
       body.amountUsers.push(newAmount);
-    });
-    body.divisions = this.setDivisions(
-      this.expense.value.division!,
-      realAmount
-    );
+      const div = {
+        amount: this.expense.value['user-amount'],
+        userOwner: {
+          id: this.expense.value.onlyUser,
+        },
+      };
+      body.divisions.push(div);
+    }
 
     console.log(this.expense.value);
     console.log(body);

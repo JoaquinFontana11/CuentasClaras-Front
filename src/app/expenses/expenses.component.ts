@@ -33,15 +33,11 @@ import { FormsModule } from '@angular/forms';
                 {{ expense.category.name }}
               </td>
               <td class="max-w-32 px-6 py-4">
-                <img
-                  class="w-32"
-                  src="{{ expense.img }}"
-                  alt="Foto del comprobante"
-                />
+                <span>{{ expense.img }}</span>
               </td>
               <td class="px-6 py-4">
                 <a
-                  href="/expenses/editar/{{ expense.id }}"
+                  href="/gastos/editar/{{ expense.id }}"
                   class="text-white border border-green-700 bg-green-800 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg p-2 text-center"
                   >Editar</a
                 >
