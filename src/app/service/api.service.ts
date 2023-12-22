@@ -48,4 +48,13 @@ export class ApiService {
     return this.http.get<any>('http://localhost:8080/expenses/findByGroup/'+id);
   }
 
+  public updateGroup(id:number,name:string,catName:string):Observable<any>{
+    return this.http.post<any>('http://localhost:8080/group/edit',{
+      id:id,
+      name: name,
+      categoryName: catName
+      
+    })
+  }
+
 }

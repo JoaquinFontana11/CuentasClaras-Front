@@ -12,11 +12,13 @@ import { Subscription } from 'rxjs';
       <h1
         class="mb-4 text-4xl font-extrabold leading-none tracking-tight text-gray-900 md:text-5xl lg:text-6xl dark:text-blue-950"
       >
-        Detalles del grupo '{{ grupo.name }}'<span
-          class="bg-blue-100 text-blue-800 text-2xl font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 ms-2"
-          >{{ grupo?.category.icon }}</span
-        >
+        Detalles del grupo '{{ grupo.name }}' <a href="/grupos/editar/{{id}}"
+    class="bg-blue-100 text-blue-800 hover:bg-blue-200 hover:text-blue-900 text-2xl font-semibold me-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800 dark:hover:bg-blue-300 dark:hover:text-blue-900"
+  >
+    Editar
+</a>
       </h1>
+      <h2 class="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-black">La categoria del grupo es '{{grupo.category.name}}'</h2>
     </div>
     <div class="relative overflow-x-auto">
       <div class="container mx-auto my-8">
@@ -116,4 +118,7 @@ export class GroupDetailComponent {
     console.log('gastos del grupo' + this.gastosGrupos);
     console.log();
   }
+
+
+
 }
