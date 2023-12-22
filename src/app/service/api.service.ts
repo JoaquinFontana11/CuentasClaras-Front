@@ -29,6 +29,14 @@ export class ApiService {
     return this.http.get<any>(`http://localhost:8080/expenses/finByUser/` + id);
   }
 
+  public acceptInvitation(id: string) {
+    return this.http.post<any>(this.urlApi + "/invitation/accept/" + id, {});
+  }
+
+  public rejectInvitation(id: string) {
+    return this.http.delete<any>(this.urlApi + "/invitation/reject/" + id, {});
+  }
+
   public register(username: string, name: string, lastName: string, email: string, password: string) {
     return this.http.post<any>('http://localhost:8080/users/save', {
       userName: username,
