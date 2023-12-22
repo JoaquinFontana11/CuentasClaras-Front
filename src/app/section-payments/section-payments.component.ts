@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-section-payments',
@@ -14,6 +16,7 @@ import { Component } from '@angular/core';
           <thead class="text-lg text-gray-700 uppercase bg-gray-50">
             <tr>
               <th scope="col" class="px-6 py-3">Grupo/Usuario</th>
+              <th scope="col" class="px-6 py-3">Categoria
               <th scope="col" class="px-6 py-3">Fecha</th>
               <th scope="col" class="px-6 py-3">Cantidad</th>
             </tr>
@@ -21,12 +24,25 @@ import { Component } from '@angular/core';
           <tbody>
             @for (item of items; track item.id) {
             <tr class="bg-white border-b hover:bg-gray-50">
-              <th
+              @if (item.expense.groupOwner){
+                <th
                 scope="row"
                 class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
               >
-                {{ item.owner }}
+                {{item.expense.groupOwner.name}}
               </th>
+              } @else{
+                <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap"
+              >
+                {{item.expense.userOwner.name}}
+              </th>
+              }
+              
+              <td class ="px-6 py-4">
+                {{item.expense.category.name}}
+              </td>
               <td class="px-6 py-4">
                 {{ item.date.toLocaleString('en-GB').split(',')[0] }}
               </td>
@@ -36,6 +52,7 @@ import { Component } from '@angular/core';
           </tbody>
         </table>
       </div>
+      @if (items.length > 5){
       <div
         class="absolute right-0 top-80 m-5 text-lg hover:text-indigo-600 transform hover:-translate-y-2 duration-500"
       >
@@ -60,41 +77,34 @@ import { Component } from '@angular/core';
           </span>
         </a>
       </div>
+    }
     </section>
   `,
   styles: ``,
 })
-export class SectionPaymentsComponent {
+export class SectionPaymentsComponent implements OnInit {
+
+  valorCookie: string = '';
+  items: any[] = []
+  owner: string = ''
+
+  constructor(private cookieService: CookieService, private apiService: ApiService) { }
+  ngOnInit(): void {
+    this.valorCookie = this.cookieService.get("userId")
+    this.apiService.getUsuario(this.valorCookie).subscribe({
+      next: (res) => {
+        this.items = res.payments;
+      }, error: (err) => {
+      }
+    })
+  }
+
+
+
   dateOptions = {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
     year: 'numeric',
   };
-  items = [
-    {
-      id: 0,
-      owner: 'Pepe',
-      date: new Date(),
-      amount: 10,
-    },
-    {
-      id: 1,
-      owner: 'Pepe',
-      date: new Date(),
-      amount: 10,
-    },
-    {
-      id: 2,
-      owner: 'Pepe',
-      date: new Date(),
-      amount: 10,
-    },
-    {
-      id: 3,
-      owner: 'Pepe',
-      date: new Date(),
-      amount: 10,
-    },
-  ];
 }
