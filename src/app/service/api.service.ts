@@ -57,4 +57,16 @@ export class ApiService {
     })
   }
 
+  public getUserByEmail(email:string):Observable<any>{
+    return this.http.get<any>('http://localhost:8080/users/findByEmail/'+email);
+  }
+
+  public sendInvitation(nombreGrupo:string,userId:string,groupId:string):Observable<any>{
+    return this.http.post<any>('http://localhost:8080/group/addMember/'+groupId,{
+      isGroup:true,
+      inviteName:nombreGrupo,
+      userId:userId
+    });
+  }
+
 }
