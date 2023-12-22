@@ -20,26 +20,17 @@ import { Router } from '@angular/router';
     <app-section-groups />
     <hr class="border-2 my-5" />
     <app-section-payments />
-    <hr class="border-2 my-5" />
-    <div>
-      <h2>Usuarios 🧔</h2>
-      <ul>
-        @for (item of usuarios; track item.id) {
-        <li>{{ item.userName }}</li>
-        }
-      </ul>
-    </div>
   `,
   styles: ``,
 })
 export class HomeComponent implements OnInit {
   usuarios: any[] = [];
 
-  constructor(private apiService: ApiService, private cookieService:CookieService, private router:Router) {}
+  constructor(private apiService: ApiService, private cookieService: CookieService, private router: Router) { }
 
   ngOnInit(): void {
     this.obtenerUsuarios();
-    if (!this.cookieService.get("userId")){
+    if (!this.cookieService.get("userId")) {
       this.router.navigate(["/login"]);
     }
   }

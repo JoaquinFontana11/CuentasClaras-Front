@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-section-money',
@@ -16,7 +18,7 @@ import { Component } from '@angular/core';
           @if (hidden) {
           <span class="text-2xl">????</span>
           } @else {
-          <span class="text-2xl">Dinero</span>
+          <span class="text-2xl">{{totalAPagar}}</span>
           }
         </div>
         <div class="mt-2">
@@ -66,8 +68,23 @@ import { Component } from '@angular/core';
   `,
   styles: ``,
 })
-export class SectionMoneyComponent {
+export class SectionMoneyComponent implements OnInit {
   hidden = false;
+  totalAPagar: number = 0;
+  payments: any[] = [];
+
+  constructor(private cookieService: CookieService, private apiService: ApiService) { }
+
+  ngOnInit(): void {
+    this.apiService.getUsuario(this.cookieService.get("userId")).subscribe({
+      next: async (res) => {
+        this.totalAPagar = res.money
+
+      }, error: (err) => {
+
+      }
+    })
+  }
 
   changeVisibility() {
     this.hidden = !this.hidden;

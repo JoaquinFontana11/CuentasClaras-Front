@@ -64,8 +64,8 @@ import { Router } from '@angular/router';
                   password requerido
               </div>
               </div>
-              <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Sign in</button>
-              <a href="/register" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Log in</a>
+              <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Iniciar Sesion</button>
+              <a href="/register" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Registrarse</a>
               <div *ngIf="errors" class="alert font-medium text-red-600">
                 {{errors}}
               </div>
@@ -86,6 +86,7 @@ export class SectionLoginComponent {
   constructor(private api: ApiService, private cookieService: CookieService, private router: Router) {}
 
   onLogin() {
+    console.log(this.username + " " + this.password)
      this.api
       .login(this.username, this.password)
       .subscribe({

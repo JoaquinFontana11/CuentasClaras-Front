@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { ApiService } from '../service/api.service';
 
 @Component({
   selector: 'app-section-groups',
@@ -10,13 +12,14 @@ import { Component } from '@angular/core';
       <div class="flex gap-5">
         @for (item of items; track item.id) {
         <a
-          href="/grupos/{{ item.id }}"
+          href="/grupos/detalle/{{ item.id }}"
           class="text-green-700 hover:text-white border border-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg px-10 py-5 text-center text-xl"
         >
           {{ item.name }}
         </a>
         }
       </div>
+      @if (items.length > 4){
       <div
         class="absolute right-0 top-24 m-5 text-lg hover:text-indigo-600 transform hover:-translate-y-2 duration-500"
       >
@@ -41,27 +44,25 @@ import { Component } from '@angular/core';
           </span>
         </a>
       </div>
+    }
     </section>
   `,
   styles: ``,
 })
-export class SectionGroupsComponent {
-  items = [
-    {
-      id: 0,
-      name: 'Grupo 1',
-    },
-    {
-      id: 1,
-      name: 'Grupo 2',
-    },
-    {
-      id: 2,
-      name: 'Grupo 3',
-    },
-    {
-      id: 3,
-      name: 'Grupo 4',
-    },
-  ];
+export class SectionGroupsComponent implements OnInit {
+
+  valorCookie: string = '';
+  items: any[] = []
+
+  constructor(private cookieService: CookieService, private apiService: ApiService) { }
+  ngOnInit(): void {
+    this.valorCookie = this.cookieService.get("userId")
+    this.apiService.getUsuario(this.valorCookie).subscribe({
+      next: async (res) => {
+        this.items = res.groups;
+      }, error: (err) => {
+      }
+    })
+
+  }
 }

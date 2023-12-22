@@ -8,9 +8,9 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-section-register',
   standalone: true,
-  imports: [FormsModule,NgIf],
+  imports: [FormsModule, NgIf],
   template: `
-  <section >
+    <section>
       <div
         class="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0"
       >
@@ -18,16 +18,12 @@ import { Router } from '@angular/router';
           class="w-fullrounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 "
         >
           <div class="p-6 space-y-4 md:space-y-6 sm:p-8">
-            <h1
-              class="text-xl font-bold leading-tight tracking-tight"
-            >
+            <h1 class="text-xl font-bold leading-tight tracking-tight">
               Registrate en Cuentas Claras
             </h1>
             <form class="space-y-4 md:space-y-6" (submit)="onRegister()">
               <div>
-                <label
-                  for="username"
-                  class="block mb-2 text-sm font-medium"
+                <label for="username" class="block mb-2 text-sm font-medium"
                   >Username</label
                 >
                 <input
@@ -41,9 +37,7 @@ import { Router } from '@angular/router';
                 />
               </div>
               <div>
-                <label
-                  for="password"
-                  class="block mb-2 text-sm font-medium"
+                <label for="password" class="block mb-2 text-sm font-medium"
                   >Password</label
                 >
                 <input
@@ -57,9 +51,7 @@ import { Router } from '@angular/router';
                 />
               </div>
               <div>
-                <label
-                  for="name"
-                  class="block mb-2 text-sm font-medium"
+                <label for="name" class="block mb-2 text-sm font-medium"
                   >Nombre</label
                 >
                 <input
@@ -73,9 +65,7 @@ import { Router } from '@angular/router';
                 />
               </div>
               <div>
-                <label
-                  for="lastName"
-                  class="block mb-2 text-sm font-medium"
+                <label for="lastName" class="block mb-2 text-sm font-medium"
                   >Apellido</label
                 >
                 <input
@@ -89,9 +79,7 @@ import { Router } from '@angular/router';
                 />
               </div>
               <div>
-                <label
-                  for="email"
-                  class="block mb-2 text-sm font-medium"
+                <label for="email" class="block mb-2 text-sm font-medium"
                   >Email</label
                 >
                 <input
@@ -104,9 +92,14 @@ import { Router } from '@angular/router';
                   required
                 />
               </div>
-              <button type="submit" class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Sign in</button>
+              <button
+                type="submit"
+                class="text-white bg-green-700 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 font-medium rounded-full text-sm px-5 py-2.5 text-center me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+              >
+                Sign in
+              </button>
               <div *ngIf="errors" class="alert font-medium text-red-600">
-                {{errors}}
+                {{ errors }}
               </div>
             </form>
           </div>
@@ -114,71 +107,76 @@ import { Router } from '@angular/router';
       </div>
     </section>
   `,
-  styles: ``
+  styles: ``,
 })
 export class SectionRegisterComponent {
-  
-
-  username: string ='';
-  password: string ='';
-  name: string ='';
-  lastName: string ='';
-  email: string ='';
-  errors: string ='';
-  
+  username: string = '';
+  password: string = '';
+  name: string = '';
+  lastName: string = '';
+  email: string = '';
+  errors: string = '';
 
   ngOnInit(): void {}
-  constructor(private api: ApiService, private cookieService: CookieService, private router: Router) {}
+  constructor(
+    private api: ApiService,
+    private cookieService: CookieService,
+    private router: Router
+  ) {}
 
-  onRegister(){
-    
-    this.validateForm()
-    console.log(this.username + " "+ this.password + " "+ this.name + " " + this.lastName + " "+ this.email)
-    if (this.errors == ''){
-      this.api.register(this.username,this.name,this.lastName,this.email,this.password).subscribe({
-        next:(res) =>{
-          console.log("registro exitoso");
-          this.router.navigate(["/login"])
-        }, error: (err) =>{
-          this.errors = err.error.message;
-        } 
-      })
+  onRegister() {
+    this.validateForm();
+    if (this.errors == '') {
+      this.api
+        .register(
+          this.username,
+          this.name,
+          this.lastName,
+          this.email,
+          this.password
+        )
+        .subscribe({
+          next: (res) => {
+            console.log('registro exitoso');
+            this.router.navigate(['/login']);
+          },
+          error: (err) => {
+            this.errors = err.error.message;
+          },
+        });
     }
   }
 
-  validateForm(){
-    if (this.username == null || this.username == ''){
-      this.errors = "La contraseña del usuario no puede estar vacio"
-      return 
+  validateForm() {
+    if (this.username == null || this.username == '') {
+      this.errors = 'La contraseña del usuario no puede estar vacio';
+      return;
     }
 
-    if (this.password == null || this.password == ''){
-      this.errors = "La contraseña del usuario no puede estar vacio"
-      return
+    if (this.password == null || this.password == '') {
+      this.errors = 'La contraseña del usuario no puede estar vacio';
+      return;
     }
 
-    if (this.name == null || this.name == ''){
-      this.errors = "El nombre del usuario no puede estar vacio"
-      return
+    if (this.name == null || this.name == '') {
+      this.errors = 'El nombre del usuario no puede estar vacio';
+      return;
     }
-    if (this.lastName == null || this.lastName == ''){
-      this.errors = "El apellido del usuario no puede estar vacio"
-      return
+    if (this.lastName == null || this.lastName == '') {
+      this.errors = 'El apellido del usuario no puede estar vacio';
+      return;
     }
-    if ( (this.email.search("@"))==-1 ){
-      this.errors = "El mail ingresado no es valido"
-      return
+    if (this.email.search('@') == -1) {
+      this.errors = 'El mail ingresado no es valido';
+      return;
     }
-      if (this.email == "@"){
-        this.errors = "El mail ingresado no es valido"
-        return
-      }
-    if (this.email == null || this.email == ''){
-      this.errors = "El Email del usuario no puede estar vacio"
-      return
+    if (this.email == '@') {
+      this.errors = 'El mail ingresado no es valido';
+      return;
     }
-    
+    if (this.email == null || this.email == '') {
+      this.errors = 'El Email del usuario no puede estar vacio';
+      return;
+    }
   }
-  
-
 }
