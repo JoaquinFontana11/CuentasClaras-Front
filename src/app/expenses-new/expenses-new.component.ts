@@ -552,6 +552,12 @@ export class ExpensesNewComponent implements OnInit {
           userOwner: { id: amount.user_id },
         };
         body.amountUsers.push(newAmount);
+
+        this.apiService
+          .addMoney(amount.user_id, amount.amount)
+          .subscribe((res: any) => {
+            console.log(res);
+          });
       });
 
       body.divisions = this.setDivisions(
@@ -565,6 +571,13 @@ export class ExpensesNewComponent implements OnInit {
         userOwner: { id: this.expense.value.userOwner },
       };
       body.amountUsers.push(newAmount);
+
+      this.apiService
+        .addMoney(this.user.id, this.expense.value['my-amount'])
+        .subscribe((res: any) => {
+          console.log(res);
+        });
+
       const div = {
         amount: this.expense.value['user-amount'],
         userOwner: {

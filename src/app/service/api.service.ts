@@ -55,4 +55,11 @@ export class ApiService {
     console.log(body);
     return this.http.post<any>('http://localhost:8080/expenses/edit', body);
   }
+
+  public addMoney(user_id: number, cant: number): Observable<any> {
+    return this.http.post<any>(
+      `http://localhost:8080/users/addMoney/${user_id}`,
+      cant
+    );
+  }
 }

@@ -65,12 +65,6 @@ import { Component } from '@angular/core';
   styles: ``,
 })
 export class SectionPaymentsComponent {
-  dateOptions = {
-    weekday: 'long',
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  };
   items = [
     {
       id: 0,
